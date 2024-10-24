@@ -35,7 +35,7 @@
 
         // Función para obtener la última ubicación del servidor
         function getUbicacion() {
-            fetch('http://localhost:5000/ubicacion')
+            fetch('https://seguimientovehiculos.onrender.com/ubicacion')
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
@@ -55,4 +55,3 @@
     </script>
 </body>
 
-</html>

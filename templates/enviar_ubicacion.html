@@ -11,7 +11,7 @@
 
     <script>
         navigator.geolocation.watchPosition(function(position) {
-            fetch('http://localhost:5000/api/ubicacion', {
+            fetch('https://seguimientovehiculos.onrender.com/api/ubicacion', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
