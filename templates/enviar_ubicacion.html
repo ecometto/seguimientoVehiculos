@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enviar Ubicación</title>
+</head>
+<body>
+    <h1>Enviar ubicación del dispositivo</h1>
+    <p>Este navegador enviará periódicamente su ubicación al servidor.</p>
+
+    <script>
+        navigator.geolocation.watchPosition(function(position) {
+            fetch('http://localhost:5000/api/ubicacion', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    lat: position.coords.latitude,
+                    lon: position.coords.longitude
+                })
+            }).then(response => response.json())
+              .then(data => console.log("Ubicación enviada:", data));
+        }, function(error) {
+            console.error("Error al obtener la ubicación:", error);
+        }, {
+            enableHighAccuracy: true
+        });
+    </script>
+</body>
+</html>

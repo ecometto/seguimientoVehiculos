@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mostrar Ubicación</title>
+    <style>
+        #map {
+            height: 600px;
+        }
+    </style>
+    <!-- Incluye el CSS de Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+
+<body>
+    <h1>Ubicación del dispositivo en tiempo real</h1>
+    <div id="map"></div>
+
+    <!-- Incluye el script de Leaflet -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script>
+        // Inicializa el mapa
+        var map = L.map('map').setView([0, 0], 2);
+
+        // Añade el tile layer de OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19
+        }).addTo(map);
+
+        // Añadir un marcador que se actualizará
+        var marker = L.marker([0, 0]).addTo(map);
+
+        // Función para obtener la última ubicación del servidor
+        function getUbicacion() {
+            fetch('http://localhost:5000/ubicacion')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error(data.error);
+                    } else {
+                        var lat = data.lat;
+                        var lon = data.lon;
+                        marker.setLatLng([lat, lon]); // Actualiza el marcador
+                        map.setView([lat, lon], 13);  // Centra el mapa en la nueva ubicación
+                    }
+                })
+                .catch(error => console.error('Error al obtener la ubicación:', error));
+        }
+
+        // Obtener la ubicación cada 2 segundos
+        setInterval(getUbicacion, 2000);
+    </script>
+</body>
+
+</html>
